@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import TodoItem from './TodoItem'
 import Footer from './Footer'
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
-import {isEmpty} from 'lodash'
+import * as perms from '../constants/Perms'
 
 const TODO_FILTERS = {
   [SHOW_ALL]: () => true,
@@ -56,9 +56,7 @@ export default class MainSection extends Component {
   }
 
   testEditable(todo, user) {
-    console.log('@testEditable', todo, user);
-    // @TODO 根据 todo 和创建者判断
-    return !isEmpty(user)
+    return user.perm === perms.ADMIN || user.name === todo.username
   }
 
   render() {

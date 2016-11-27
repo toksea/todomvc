@@ -31,7 +31,7 @@ export default class Header extends Component {
                        placeholder="请输入接头暗号给 Lily 派单" />
           : <TodoTextInput newTodo
                        onSave={this.handleSave}
-                       placeholder="What needs to be done?" />
+                       placeholder="想求 Lily 干点嘛？" />
 	}
       </header>
     )

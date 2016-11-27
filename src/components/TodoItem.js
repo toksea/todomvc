@@ -57,7 +57,7 @@ export default class TodoItem extends Component {
       else {
         element = (
           <div className="view">
-            <label onDoubleClick={this.handleDoubleClick}>
+            <label>
               {todo.text}
             </label>
           </div>
