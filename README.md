@@ -2,6 +2,13 @@
 
 This project template was built with [Create React App](https://github.com/facebookincubator/create-react-app).
 
+## TODOs
+
+* [ ] 增加登录
+* [ ] 增加权限（提交者，管理员）
+* [ ] 任务排序
+* 
+
 ## Available Scripts
 
 In the project directory, you can run:
