@@ -1,5 +1,6 @@
 import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
 
+// @TODO 用 status 而非 completed
 const initialState = [
   {
     text: 'Use Redux',

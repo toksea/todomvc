@@ -42,6 +42,7 @@ export default class Footer extends Component {
   }
 
   renderClearButton() {
+    // 不适用
     const { completedCount, onClearCompleted } = this.props
     if (completedCount > 0) {
       return (
@@ -64,7 +65,7 @@ export default class Footer extends Component {
             </li>
           )}
         </ul>
-        {this.renderClearButton()}
+        {/*this.renderClearButton()*/}
       </footer>
     )
   }
