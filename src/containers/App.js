@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Header from '../components/Header'
-import HeaderLoggedOut from '../components/HeaderLoggedOut'
 import MainSection from '../components/MainSection'
 import * as TodoActions from '../actions'
+
 
 // 如果 component 比较简单，可以简写为一个 function，
 // function 也是对象，再往上加属性
@@ -19,7 +19,10 @@ class App extends Component {
     const {user, todos, actions} = this.props
     return (
       <div>
-	<Header user={user} addTodo={actions.addTodo} />
+	<Header user={user}
+                addTodo={actions.addTodo}
+                logIn={actions.logIn}
+        />
 	<MainSection todos={todos} actions={actions} />
       </div>
     )

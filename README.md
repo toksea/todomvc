@@ -7,7 +7,10 @@ This project template was built with [Create React App](https://github.com/faceb
 * [ ] 增加登录
 * [ ] 增加权限（提交者，管理员）
 * [ ] 任务排序
-* 
+
+## Tutorials
+* 配置 devtools：https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md
+* dock monitor 的参数：https://github.com/gaearon/redux-devtools-dock-monitor
 
 ## Available Scripts
 
