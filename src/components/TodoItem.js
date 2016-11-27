@@ -5,6 +5,7 @@ import TodoTextInput from './TodoTextInput'
 export default class TodoItem extends Component {
   static propTypes = {
     todo: PropTypes.object.isRequired,
+    isEditable: PropTypes.bool.isRequired,
     editTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     completeTodo: PropTypes.func.isRequired
@@ -28,7 +29,7 @@ export default class TodoItem extends Component {
   }
 
   render() {
-    const { todo, completeTodo, deleteTodo } = this.props
+    const { todo, isEditable, completeTodo, deleteTodo } = this.props
 
     let element
     if (this.state.editing) {
@@ -38,19 +39,30 @@ export default class TodoItem extends Component {
                        onSave={(text) => this.handleSave(todo.id, text)} />
       )
     } else {
-      element = (
-        <div className="view">
-          <input className="toggle"
+      if (isEditable) {
+        element = (
+          <div className="view">
+            <input className="toggle"
                  type="checkbox"
                  checked={todo.completed}
                  onChange={() => completeTodo(todo.id)} />
-          <label onDoubleClick={this.handleDoubleClick}>
-            {todo.text}
-          </label>
-          <button className="destroy"
+            <label onDoubleClick={this.handleDoubleClick}>
+              {todo.text}
+            </label>
+            <button className="destroy"
                   onClick={() => deleteTodo(todo.id)} />
-        </div>
-      )
+          </div>
+        )
+      }
+      else {
+        element = (
+          <div className="view">
+            <label onDoubleClick={this.handleDoubleClick}>
+              {todo.text}
+            </label>
+          </div>
+        )
+      }
     }
 
     return (

@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 export default class LogIn extends Component {
   static propTypes = {
-    onSave: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
     text: PropTypes.string,
     placeholder: PropTypes.string,
     editing: PropTypes.bool,
@@ -16,11 +16,11 @@ export default class LogIn extends Component {
 
   handleSubmit = e => {
     const text = e.target.value.trim()
-    if (e.which === 13) {
-      this.props.onSave(text)
-      if (this.props.newTodo) {
-        this.setState({ text: '' })
-      }
+    if (e.which === 13) { // enter pressed (ASCII)
+      this.props.onSubmit(text)
+      // if (this.props.newTodo) {
+      //   this.setState({ text: '' })
+      // }
     }
   }
 
@@ -44,7 +44,7 @@ export default class LogIn extends Component {
         placeholder={this.props.placeholder}
         autoFocus="true"
         value={this.state.text}
-        onBlur={this.handleBlur}
+        // onBlur={this.handleBlur}
         onChange={this.handleChange}
         onKeyDown={this.handleSubmit} />
     )

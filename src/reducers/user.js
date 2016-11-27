@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
+import { LOG_IN } from '../constants/ActionTypes'
 
 const initialState = {}
 // @TODO 从 localstorage 读取
@@ -6,6 +6,9 @@ const initialState = {}
 export default function user(state = initialState, action) {
   switch (action.type) {
 
+    case LOG_IN:
+      return action.user
+      
     default:
       return state
   }

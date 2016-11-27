@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import TodoItem from './TodoItem'
 import Footer from './Footer'
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
+import {isEmpty} from 'lodash'
 
 const TODO_FILTERS = {
   [SHOW_ALL]: () => true,
@@ -26,6 +27,7 @@ export default class MainSection extends Component {
   }
 
   renderToggleAll(completedCount) {
+    // 该功能不适用，且对登录 UI 造成麻烦，所以先注释
     const { todos, actions } = this.props
     if (todos.length > 0) {
       return (
@@ -53,8 +55,14 @@ export default class MainSection extends Component {
     }
   }
 
+  testEditable(todo, user) {
+    console.log('@testEditable', todo, user);
+    // @TODO 根据 todo 和创建者判断
+    return !isEmpty(user)
+  }
+
   render() {
-    const { todos, actions } = this.props
+    const { user, todos, actions } = this.props
     const { filter } = this.state
 
     const filteredTodos = todos.filter(TODO_FILTERS[filter])
@@ -65,10 +73,10 @@ export default class MainSection extends Component {
 
     return (
       <section className="main">
-        {this.renderToggleAll(completedCount)}
+        {/* this.renderToggleAll(completedCount) */}
         <ul className="todo-list">
           {filteredTodos.map(todo =>
-            <TodoItem key={todo.id} todo={todo} {...actions} />
+            <TodoItem isEditable={this.testEditable(todo, user)} key={todo.id} todo={todo} {...actions} />
           )}
         </ul>
         {this.renderFooter(completedCount)}

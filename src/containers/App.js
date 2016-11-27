@@ -23,7 +23,7 @@ class App extends Component {
                 addTodo={actions.addTodo}
                 logIn={actions.logIn}
         />
-	<MainSection todos={todos} actions={actions} />
+	<MainSection user={user} todos={todos} actions={actions} />
       </div>
     )
   }

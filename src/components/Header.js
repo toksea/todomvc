@@ -14,6 +14,12 @@ export default class Header extends Component {
     }
   }
 
+  handleLogIn = pass => {
+    if (pass.length !== 0) {
+      this.props.logIn(pass)
+    }
+  }
+  
   render() {
     const {user} = this.props
     return (
@@ -21,7 +27,7 @@ export default class Header extends Component {
         <h1>todos</h1>
 	{isEmpty(user) ?
 	  <LogIn newTodo
-                       onSave={this.handleSave}
+                       onSubmit={this.handleLogIn}
                        placeholder="请输入接头暗号给 Lily 派单" />
           : <TodoTextInput newTodo
                        onSave={this.handleSave}
