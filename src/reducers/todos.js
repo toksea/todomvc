@@ -3,11 +3,26 @@ import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_CO
 // @TODO 用 status 而非 completed
 const initialState = [
   {
-    text: 'Use Redux',
+    text: '正在做的任务',
     completed: false,
-    id: 0,
+    confirmed: true,
+    id: 1,
     username: 'lily'
-  }
+  },
+  {
+    text: '新建的任务',
+    completed: false,
+    confirmed: false,
+    id: 2,
+    username: 'lily'
+  },
+  {
+    text: '已完成的任务',
+    completed: true,
+    confirmed: true,
+    id: 3,
+    username: 'lily'
+  },
 ]
 
 export default function todos(state = initialState, action) {
