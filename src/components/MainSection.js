@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import TodoItem from './TodoItem'
 import Footer from './Footer'
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
+import { SHOW_ALL, SHOW_COMPLETED, SHOW_CONFIRMED, SHOW_ACTIVE } from '../constants/TodoFilters'
 import * as perms from '../constants/Perms'
 
 const TODO_FILTERS = {
   [SHOW_ALL]: () => true,
   [SHOW_ACTIVE]: todo => !todo.completed,
-  [SHOW_COMPLETED]: todo => todo.completed
+  [SHOW_COMPLETED]: todo => todo.completed,
+  [SHOW_CONFIRMED]: todo => todo.confirmed
 }
 
 export default class MainSection extends Component {
