@@ -2,6 +2,7 @@
   "name": "todomvc",
   "version": "0.0.1",
   "private": true,
+  "proxy": "http://127.0.0.1:8989",
   "devDependencies": {
     "autoprefixer": "6.4.1",
     "babel-core": "6.14.0",
@@ -50,10 +51,15 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "classnames": "^2.2.5",
+    "dora": "^0.4.3",
+    "dora-plugin-proxy": "^0.8.5",
     "lodash": "^4.17.2",
+    "mockjs": "^1.0.1-beta3",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
+    "react-hammerjs": "^0.5.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
@@ -65,7 +71,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "dora": "./node_modules/.bin/dora --plugins proxy"
   },
   "jest": {
     "moduleFileExtensions": [

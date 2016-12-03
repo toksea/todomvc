@@ -1,14 +1,16 @@
 import * as types from '../constants/ActionTypes'
 import * as perms from '../constants/Perms'
 import { isEmpty } from 'lodash'
+import http from '../lib/http'
+
 
 export const addTodo = (text, user) => {
   return (dispatch, getState) => {
 
     const { user } = getState();
-    
+
     return dispatch({ type: types.ADD_TODO, text, username: user.name })
-    
+
   }
 }
 export const deleteTodo = id => ({ type: types.DELETE_TODO, id })
@@ -21,31 +23,38 @@ export const logIn = pass => {
   return (dispatch, getState) => {
 
     console.log(pass);
-    
-    // const { counter } = getState();
-    let user = {}
-    if (pass === '1') {
-      user = {
-	name: 'lily',
-	perm: perms.ADMIN,
-      }
-    }
-    if (pass === 'q') {
-      user = {
-	name: 'pp',
-	perm: perms.USER,
-      }
-    }
-    console.log(user);
-    console.log(isEmpty(user));
-    
-    if (!isEmpty(user)) {
-      console.log('not empty');
+
+    http.post('/user/login', {
+      pass
+    }).then((res) => {
+      // {
+      //        data: {}, // `data` is the response that was provided by the server
+      //        status: 200, // `status` is the HTTP status code from the server response
+      //        statusText: 'OK', // `statusText` is the HTTP status message from the server response
+       //       headers: {}, // `headers` the headers that the server responded with
+      //        config: {}, // `config` is the config that was provided to `axios` for the request
+      // }
+
+
+      return res.data
+
+    }).then((user) => {
+
+      console.log(user);
       return dispatch({ type: types.LOG_IN, user });
-    }
 
-    alert('暗号有误')
+    }).catch((err, res) => {
 
+      if (err.response) {
+        const message = err.response.data.message
+        return alert(message) // @TODO dispatch
+      }
+      else {
+        return alert('caught', err) // @TODO dispatch
+      }
+      // @todo 根据错误类型报错
+
+    })
   };
 }
 
