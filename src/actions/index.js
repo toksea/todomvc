@@ -3,7 +3,6 @@ import * as perms from '../constants/Perms'
 import { isEmpty } from 'lodash'
 import http from '../lib/http'
 
-
 export const addTodo = (text, user) => {
   return (dispatch, getState) => {
 
@@ -28,14 +27,12 @@ export const logIn = pass => {
       pass
     }).then((res) => {
       // {
-      //        data: {}, // `data` is the response that was provided by the server
-      //        status: 200, // `status` is the HTTP status code from the server response
-      //        statusText: 'OK', // `statusText` is the HTTP status message from the server response
-       //       headers: {}, // `headers` the headers that the server responded with
-      //        config: {}, // `config` is the config that was provided to `axios` for the request
+      //    data: {},    // `data` is the response that was provided by the server
+      //    status: 200, // `status` is the HTTP status code from the server response
+      //    statusText: 'OK', // `statusText` is the HTTP status message from the server response
+      //   headers: {}, // `headers` the headers that the server responded with
+      //    config: {},  // `config` is the config that was provided to `axios` for the request
       // }
-
-
       return res.data
 
     }).then((user) => {
@@ -43,18 +40,32 @@ export const logIn = pass => {
       console.log(user);
       return dispatch({ type: types.LOG_IN, user });
 
-    }).catch((err, res) => {
+    }).catch((error) => {
 
-      if (err.response) {
-        const message = err.response.data.message
-        return alert(message) // @TODO dispatch
+      if (error.response) {
+        // The request was made, but the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        let message = ' [' + error.response.status + ']';
+        if (error.response.data && error.response.data.message) {
+          message = error.response.data.message + message;
+        }
+        else {
+          message = '网络错误' + message;
+        }
+        alert(message) // @TODO dispatch
+
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+        alert(error.message)
+
       }
-      else {
-        return alert('caught', err) // @TODO dispatch
-      }
-      // @todo 根据错误类型报错
+      console.log(error.config);
 
     })
   };
 }
-
