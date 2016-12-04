@@ -17,6 +17,10 @@ export default class MainSection extends Component {
     actions: PropTypes.object.isRequired
   }
 
+  componentDidMount() {
+    this.props.actions.getTodo()
+  }
+
   state = { filter: SHOW_ALL }
 
   handleClearCompleted = () => {
@@ -75,7 +79,7 @@ export default class MainSection extends Component {
         {/* this.renderToggleAll(completedCount) */}
         <ul className="todo-list">
           {filteredTodos.map(todo =>
-            <TodoItem isEditable={this.testEditable(todo, user)} key={todo.id} todo={todo} {...actions} />
+            <TodoItem isEditable={this.testEditable(todo, user)} key={todo._id} todo={todo} {...actions} />
           )}
         </ul>
         {this.renderFooter(completedCount)}

@@ -1,36 +1,43 @@
-import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
+import { GET_TODO, ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
 
 // @TODO 用 status 而非 completed
-const initialState = [
+const mockData = [
   {
     text: '正在做的任务',
     completed: false,
     confirmed: true,
-    id: 1,
+    _id: 1,
     username: 'lily'
   },
   {
     text: '新建的任务',
     completed: false,
     confirmed: false,
-    id: 2,
+    _id: 2,
     username: 'lily'
   },
   {
     text: '已完成的任务',
     completed: true,
     confirmed: true,
-    id: 3,
+    _id: 3,
     username: 'lily'
   },
 ]
 
+const initialState = []
+// const initialState = mockData
+
 export default function todos(state = initialState, action) {
   switch (action.type) {
+
+    case GET_TODO:
+      return action.tasks
+
     case ADD_TODO:
       return [
         {
-          id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+          _id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
           completed: false,
           text: action.text,
           username: action.username

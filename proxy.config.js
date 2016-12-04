@@ -28,12 +28,31 @@ var ADMIN = 'admin'
 // 比起 express，dora 更方便
 module.exports = {
 
+  'GET /api/v1/task': (req, res) => {
+
+    tasksDB.find({}, (err, docs) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Internal Error'
+        });
+      }
+      return res.json(docs);
+    });
+
+  },
+  
   // 后端实现后，proxy 给后端
   // '/api/v1/*':  'http://10.10.1.10:6060',
   'POST /api/v1/task': (req, res) => {
 
     console.log(req.headers.cookie)
     var cookie = req.headers.cookie;
+    if (!cookie) {
+      return res.status(401).json({
+        message: "Auth Error"
+      })
+    }
+
     console.log('cookie', cookie);
     var token = cookie.slice(6);
     console.log('token', token);
@@ -82,7 +101,7 @@ module.exports = {
           message: 'Internal Error'
         });
       }
-      return res.json(task);
+      return res.json(newDoc);
     });
 
   },

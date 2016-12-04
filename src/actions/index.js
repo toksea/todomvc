@@ -3,6 +3,49 @@ import * as perms from '../constants/Perms'
 import { isEmpty } from 'lodash'
 import http from '../lib/http'
 
+export const getTodo = () => {
+  return (dispatch, getState) => {
+
+    http.get('/task').then(res => {
+      return res.data
+    }).then((tasks) => {
+
+      console.log('tasks', tasks);
+      return dispatch({ type: types.GET_TODO, tasks})
+
+    }).catch((error) => {
+
+      if (error.response) {
+        // The request was made, but the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        let message = ' [' + error.response.status + ']';
+        if (error.response.data && error.response.data.message) {
+          message = error.response.data.message + message;
+        }
+        else {
+          message = '网络错误' + message;
+        }
+        alert(message) // @TODO dispatch
+
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+        alert(error.message)
+
+      }
+      console.log(error.config);
+
+    })
+    
+
+  }
+}
+
+
 export const addTodo = (text) => {
   return (dispatch, getState) => {
 

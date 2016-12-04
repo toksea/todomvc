@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import TodoTextInput from './TodoTextInput'
+import Hammer from 'react-hammerjs'
 
 export default class TodoItem extends Component {
   static propTypes = {
@@ -19,24 +20,31 @@ export default class TodoItem extends Component {
     this.setState({ editing: true })
   }
 
-  handleSave = (id, text) => {
+  handleSave = (_id, text) => {
     if (text.length === 0) {
-      this.props.deleteTodo(id)
+      this.props.deleteTodo(_id)
     } else {
-      this.props.editTodo(id, text)
+      this.props.editTodo(_id, text)
     }
     this.setState({ editing: false })
   }
 
+  handleTap = () => {
+    console.log(arguments)
+    alert('hehe')
+  }
+
   render() {
-    const { todo, isEditable, completeTodo, deleteTodo } = this.props
+    const { todo, isEditable,
+	    completeTodo, deleteTodo,
+            tapTodo } = this.props
 
     let element
     if (this.state.editing) {
       element = (
         <TodoTextInput text={todo.text}
                        editing={this.state.editing}
-                       onSave={(text) => this.handleSave(todo.id, text)} />
+                       onSave={(text) => this.handleSave(todo._id, text)} />
       )
     } else {
       if (isEditable) {
@@ -45,12 +53,17 @@ export default class TodoItem extends Component {
             <input className="toggle"
                  type="checkbox"
                  checked={todo.completed}
-                 onChange={() => completeTodo(todo.id)} />
-            <label onDoubleClick={this.handleDoubleClick}>
-              {todo.text}
-            </label>
+                 onChange={() => completeTodo(todo._id)} />
+	  
+            <Hammer
+	      onDoubleTap={this.handleDoubleClick} >
+              <label>
+                {todo.text}
+              </label>
+	    </Hammer>
+
             <button className="destroy"
-                  onClick={() => deleteTodo(todo.id)} />
+                  onClick={() => deleteTodo(todo._id)} />
           </div>
         )
       }
