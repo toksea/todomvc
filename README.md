@@ -8,9 +8,23 @@ This project template was built with [Create React App](https://github.com/faceb
 * [ ] 增加权限（提交者，管理员）
 * [ ] 任务排序
 
-## Tutorials
+## References
 * 配置 devtools：https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md
 * dock monitor 的参数：https://github.com/gaearon/redux-devtools-dock-monitor
+* todomvc 没有 mobile 支持，增加手势：http://hammerjs.github.io/
+* hammer 有 react 包装 https://github.com/JedWatson/react-hammerjs
+* slide 需要做动画（react 怎么做动画）（面试可以问）
+* 需要 draggable
+* 可以参考之前一个流行的 TODO App
+* NEDB https://github.com/louischatriot/nedb
+* DORA PROXY https://github.com/dora-js/dora-plugin-proxy
+* GitHub API https://developer.github.com/v3/
+* https://jsperf.com/delete-vs-undefined-vs-null/16
+* https://github.com/mzabriskie/axios
+* http://xiaopei.li/wiki/doku.php?id=it:misc
+* https://github.com/mzabriskie/react-draggable
+* http://gaearon.github.io/react-dnd/examples-chessboard-tutorial-app.html
+* https://github.com/voronianski/react-swipe
 
 ## Available Scripts
 

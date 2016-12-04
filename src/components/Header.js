@@ -28,10 +28,10 @@ export default class Header extends Component {
 	{isEmpty(user) ?
 	  <LogIn newTodo
                        onSubmit={this.handleLogIn}
-                       placeholder="请输入接头暗号给 Lily 派单" />
+                       placeholder="输入密码登录" />
           : <TodoTextInput newTodo
                        onSave={this.handleSave}
-                       placeholder="想求 Lily 干点嘛？" />
+                       placeholder="新建任务" />
 	}
       </header>
     )
