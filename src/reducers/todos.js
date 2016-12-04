@@ -1,4 +1,4 @@
-import { GET_TODO, ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
+import { GET_TODO, ADD_TODO, DELETE_TODO, UPDATE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes'
 
 // @TODO 用 status 而非 completed
 const mockData = [
@@ -37,7 +37,7 @@ export default function todos(state = initialState, action) {
     case ADD_TODO:
       return [
         {
-          _id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+          _id: state.reduce((maxId, todo) => Math.max(todo._id, maxId), -1) + 1,
           completed: false,
           text: action.text,
           username: action.username
@@ -47,19 +47,26 @@ export default function todos(state = initialState, action) {
 
     case DELETE_TODO:
       return state.filter(todo =>
-        todo.id !== action.id
+        todo._id !== action._id
       )
 
+    case UPDATE_TODO:
+      return state.map(todo =>
+        todo._id === action.id ?
+          { ...action.task } :
+          todo
+      )
+	
     case EDIT_TODO:
       return state.map(todo =>
-        todo.id === action.id ?
+        todo._id === action._id ?
           { ...todo, text: action.text } :
           todo
       )
 
     case COMPLETE_TODO:
       return state.map(todo =>
-        todo.id === action.id ?
+        todo._id === action._id ?
           { ...todo, completed: !todo.completed } :
           todo
       )

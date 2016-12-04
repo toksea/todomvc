@@ -85,12 +85,54 @@ export const addTodo = (text) => {
       console.log(error.config);
 
     })
-    
-
   }
 }
+
 export const deleteTodo = id => ({ type: types.DELETE_TODO, id })
-export const editTodo = (id, text) => ({ type: types.EDIT_TODO, id, text })
+  
+export const editTodo = (id, text) => {
+  return (dispatch, getState) => {
+
+    http.patch('/task/' + id, {
+      text
+    }).then(res => {
+      return res.data
+    }).then((task) => {
+
+      console.log('task', task);
+        
+      return dispatch({ type: types.UPDATE_TODO, id: task._id, task })
+
+    }).catch((error) => {
+
+      if (error.response) {
+        // The request was made, but the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        let message = ' [' + error.response.status + ']';
+        if (error.response.data && error.response.data.message) {
+          message = error.response.data.message + message;
+        }
+        else {
+          message = '网络错误' + message;
+        }
+        alert(message) // @TODO dispatch
+
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+        alert(error.message)
+
+      }
+      console.log(error.config);
+
+    })
+  }
+}
+  
 export const completeTodo = id => ({ type: types.COMPLETE_TODO, id })
 export const completeAll = () => ({ type: types.COMPLETE_ALL })
 export const clearCompleted = () => ({ type: types.CLEAR_COMPLETED })

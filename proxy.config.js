@@ -40,7 +40,7 @@ module.exports = {
     });
 
   },
-  
+
   // 后端实现后，proxy 给后端
   // '/api/v1/*':  'http://10.10.1.10:6060',
   'POST /api/v1/task': (req, res) => {
@@ -102,6 +102,75 @@ module.exports = {
         });
       }
       return res.json(newDoc);
+    });
+
+  },
+
+  'PATCH /api/v1/task/(.*)': (req, res) => {
+
+    console.log('#params', req.params);
+
+    // task id
+    var id = req.params[0];
+
+    console.log(req.headers.cookie)
+    var cookie = req.headers.cookie;
+    if (!cookie) {
+      return res.status(401).json({
+        message: "Auth Error"
+      })
+    }
+
+    console.log('cookie', cookie);
+    var token = cookie.slice(6);
+    console.log('token', token);
+
+    // @todo try catch...401
+    var user;
+    try {
+      user = jwt.verify(token, secret);
+    }
+    catch (err) {
+      return res.status(401).json({
+        message: "Auth Error"
+      })
+    }
+
+    var body;
+    try {
+      body = JSON.parse(req.body);
+    }
+    catch (err) {
+      return res.status(400).json({
+        message: "Problems parsing JSON"
+      })
+    }
+
+    // @TODO 检查 body
+    console.log('### body', body);
+
+    tasksDB.findOne({_id: id}, (err, doc) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Internal Error'
+        });
+      }
+
+      if (!doc) {
+        // doc 不存在
+      }
+
+      // @TODO 检查 doc 的 user
+
+      tasksDB.update({_id: id}, { $set: body }, {
+        multi: false,
+        upsert: false,
+        returnUpdatedDocs: true,
+      }, (err, numReplaced, affectedDocuments) => {
+        console.log('update cb', err, numReplaced, affectedDocuments)
+        return res.json(affectedDocuments);
+      })
+
     });
 
   },
