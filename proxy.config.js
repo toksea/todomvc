@@ -1,5 +1,11 @@
 var mockjs = require('mockjs');
+var jwt = require('jsonwebtoken');
 var _ = require('lodash');
+
+var secret = 'terces';
+var options = {
+  expiresIn: '1h',
+}
 
 // dora、dora 插件的运行方式未深究，根据经验总结：
 // 1. 不能用 import 语法
@@ -63,6 +69,12 @@ module.exports = {
 	message: "暗号有误",
       })
     }
+
+    // @TODO set cookie
+    res.set('Set-Cookie',
+	    'token=' + jwt.sign(user, secret, options) + '; Path=/;');
+    // cookie 的 domain 和 path 默认为 domain and path of the resource
+    // that was requested
     res.json(user);
 
   }
