@@ -29,8 +29,11 @@ export default class TodoTextInput extends Component {
   }
 
   handleBlur = e => {
-    if (!this.props.newTodo) {
-      this.props.onSave(e.target.value)
+    this.props.onSave(e.target.value)
+    if (this.props.newTodo) {
+      // 因为手机键盘的 done（完成）靠 keydown 捕捉不到，
+      // 所以 blue 都要做提交
+      this.setState({ text: '' })
     }
   }
 

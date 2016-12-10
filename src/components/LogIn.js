@@ -29,9 +29,8 @@ export default class LogIn extends Component {
   }
 
   handleBlur = e => {
-    if (!this.props.newTodo) {
-      this.props.onSave(e.target.value)
-    }
+    const text = e.target.value.trim()
+    this.props.onSubmit(text)
   }
 
   render() {
@@ -44,7 +43,7 @@ export default class LogIn extends Component {
         placeholder={this.props.placeholder}
         autoFocus="true"
         value={this.state.text}
-        // onBlur={this.handleBlur}
+        onBlur={this.handleBlur}
         onChange={this.handleChange}
         onKeyDown={this.handleSubmit} />
     )
