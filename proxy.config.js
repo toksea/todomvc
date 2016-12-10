@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 
 var jwt = require('jsonwebtoken');
-var secret = 'terces';
+var secret = 'secret';
 var options = {
   expiresIn: '1h',
 }
@@ -45,16 +45,7 @@ module.exports = {
   // '/api/v1/*':  'http://10.10.1.10:6060',
   'POST /api/v1/task': (req, res) => {
 
-    console.log(req.headers.cookie)
-    var cookie = req.headers.cookie;
-    if (!cookie) {
-      return res.status(401).json({
-        message: "Auth Error"
-      })
-    }
-
-    console.log('cookie', cookie);
-    var token = cookie.slice(6);
+    var token = getTokenFromCookie(req.headers.cookie)
     console.log('token', token);
 
     // @todo try catch...401
@@ -63,6 +54,7 @@ module.exports = {
       user = jwt.verify(token, secret);
     }
     catch (err) {
+      console.log('jwt error', err);
       return res.status(401).json({
         message: "Auth Error"
       })
@@ -113,16 +105,7 @@ module.exports = {
     // task id
     var id = req.params[0];
 
-    console.log(req.headers.cookie)
-    var cookie = req.headers.cookie;
-    if (!cookie) {
-      return res.status(401).json({
-        message: "Auth Error"
-      })
-    }
-
-    console.log('cookie', cookie);
-    var token = cookie.slice(6);
+    var token = getTokenFromCookie(req.headers.cookie);
     console.log('token', token);
 
     // @todo try catch...401
@@ -252,4 +235,25 @@ function findUser(pass) {
       return user;
     }
   }
+}
+
+function getTokenFromCookie(cookie) {
+
+  if (!cookie) {
+    return res.status(401).json({
+      message: "Auth Error"
+    })
+  }
+
+  console.log('cookie', cookie);
+  var cookiePairs = cookie.split(';');
+  console.log('cookiePairs', cookiePairs);
+  var cookies = {};
+  cookiePairs.forEach(function(cookiePair) {
+    var cookieKeyValue = cookiePair.split('=');
+    cookies[cookieKeyValue[0].trim()] = cookieKeyValue[1].trim();
+  })
+  console.log('cookies', cookies);
+
+  return cookies['token'];
 }
