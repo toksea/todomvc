@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes'
 import * as perms from '../constants/Perms'
-import { isEmpty } from 'lodash'
+import { isEmpty, find } from 'lodash'
 import http from '../lib/http'
 
 export const getTodo = () => {
@@ -40,7 +40,7 @@ export const getTodo = () => {
       console.log(error.config);
 
     })
-    
+
 
   }
 }
@@ -89,51 +89,44 @@ export const addTodo = (text) => {
 }
 
 export const deleteTodo = id => ({ type: types.DELETE_TODO, id })
-  
+
 export const editTodo = (id, text) => {
+
   return (dispatch, getState) => {
 
-    http.patch('/task/' + id, {
+    const data = {
       text
-    }).then(res => {
-      return res.data
-    }).then((task) => {
+    }
 
-      console.log('task', task);
-        
-      return dispatch({ type: types.UPDATE_TODO, id: task._id, task })
-
-    }).catch((error) => {
-
-      if (error.response) {
-        // The request was made, but the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-
-        let message = ' [' + error.response.status + ']';
-        if (error.response.data && error.response.data.message) {
-          message = error.response.data.message + message;
-        }
-        else {
-          message = '网络错误' + message;
-        }
-        alert(message) // @TODO dispatch
-
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-        alert(error.message)
-
-      }
-      console.log(error.config);
-
-    })
+    updateTodo(id, data, dispatch)
   }
 }
-  
-export const completeTodo = id => ({ type: types.COMPLETE_TODO, id })
+
+export const completeTodo = id => {
+
+  return (dispatch, getState) => {
+
+    // 获取原 todo
+    let {todos} = getState()
+
+    let todo = find(todos, {
+      _id: id
+    })
+
+    console.log(id, todo);
+
+    // toggle 状态
+
+    // 更新
+    const data = {
+      completed: !todo.completed
+    }
+
+    updateTodo(id, data, dispatch)
+  }
+
+}
+
 export const completeAll = () => ({ type: types.COMPLETE_ALL })
 export const clearCompleted = () => ({ type: types.CLEAR_COMPLETED })
 
@@ -187,4 +180,43 @@ export const logIn = pass => {
 
     })
   };
+}
+
+const updateTodo = (id, data, dispatch) => {
+
+  http.patch('/task/' + id, data).then(res => {
+    return res.data
+  }).then((task) => {
+
+    console.log('task', task);
+
+    return dispatch({ type: types.UPDATE_TODO, id: task._id, task })
+
+  }).catch((error) => {
+
+    if (error.response) {
+      // The request was made, but the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+
+      let message = ' [' + error.response.status + ']';
+      if (error.response.data && error.response.data.message) {
+        message = error.response.data.message + message;
+      }
+      else {
+        message = '网络错误' + message;
+      }
+      alert(message) // @TODO dispatch
+
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+      alert(error.message)
+
+    }
+    console.log(error.config);
+
+  })
 }
