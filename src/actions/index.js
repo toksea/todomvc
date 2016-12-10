@@ -88,7 +88,42 @@ export const addTodo = (text) => {
   }
 }
 
-export const deleteTodo = id => ({ type: types.DELETE_TODO, id })
+export const deleteTodo = id => {
+  return (dispatch, getState) => {  
+    http.delete('/task/' + id).then(res => {
+      return res.data
+    }).then(() => {
+
+      return dispatch({ type: types.DELETE_TODO, id })
+
+    }).catch((error) => {
+
+      if (error.response) {
+	// The request was made, but the server responded with a status code
+	// that falls out of the range of 2xx
+	console.log(error.response.data);
+	console.log(error.response.status);
+	console.log(error.response.headers);
+
+	let message = ' [' + error.response.status + ']';
+	if (error.response.data && error.response.data.message) {
+          message = error.response.data.message + message;
+	}
+	else {
+          message = '网络错误' + message;
+	}
+	alert(message) // @TODO dispatch
+
+      } else {
+	// Something happened in setting up the request that triggered an Error
+	console.log('Error', error.message);
+	alert(error.message)
+
+      }
+      console.log(error.config);
+    })
+  }
+}
 
 export const editTodo = (id, text) => {
 

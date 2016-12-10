@@ -158,6 +158,40 @@ module.exports = {
 
   },
 
+  'DELETE /api/v1/task/(.*)': (req, res) => {
+
+    console.log('#params', req.params);
+
+    // task id
+    var id = req.params[0];
+
+    var token = getTokenFromCookie(req.headers.cookie);
+    console.log('token', token);
+
+    // @todo try catch...401
+    var user;
+    try {
+      user = jwt.verify(token, secret);
+    }
+    catch (err) {
+      return res.status(401).json({
+        message: "Auth Error"
+      })
+    }
+
+    tasksDB.remove({_id: id}, {}, (err, numRemoved) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Internal Error'
+        });
+      }
+
+      return res.status(204).end();
+    });
+
+  },
+
+  
   // 后端未实现，dora 直接提供服务
   'POST /api/v1/user/login': (req, res) => {
 
