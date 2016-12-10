@@ -110,7 +110,7 @@ const cardSource = {
     console.log('@begin drag', props);
 
     return {
-      id: props.todo._id
+      id: props.todo._id,
     };
   },
 
@@ -169,7 +169,10 @@ const squareTarget = {
   },
 
   drop(props, monitor) {
-    console.log('@drop', props.todo, monitor.getItem())
+    let source = monitor.getItem()
+    console.log('@drop', props.todo, source)
+
+    props.moveTodo(source.id, props.todo.order)
     // moveKnight(props.x, props.y);
     // @todo 修改排序
   }

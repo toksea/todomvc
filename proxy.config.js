@@ -30,7 +30,7 @@ module.exports = {
 
   'GET /api/v1/task': (req, res) => {
 
-    tasksDB.find({}, (err, docs) => {
+    tasksDB.find({}).sort({order: 1}).exec((err, docs) => {
       if (err) {
         return res.status(500).json({
           message: 'Internal Error'
@@ -82,18 +82,127 @@ module.exports = {
       })
     }
 
-    var task = {
-      text: body.text,
-      username: user.name
-    }
-
-    tasksDB.insert(task, (err, newDoc) => {
+    // @TODO 查询当前的任务数，确定 order
+    tasksDB.count({}, function (err, count) {
       if (err) {
         return res.status(500).json({
           message: 'Internal Error'
         });
       }
-      return res.json(newDoc);
+
+      var task = {
+        text: body.text,
+        username: user.name,
+        order: count+1
+      }
+
+      tasksDB.insert(task, (err, newDoc) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Internal Error'
+          });
+        }
+        return res.json(newDoc);
+      });
+
+
+    });
+
+
+  },
+
+  'PATCH /api/v1/task/(.*)/order': (req, res) => {
+
+    console.log('@order ', req.params, req.body);
+
+    // task id
+    var id = req.params[0];
+
+    var token = getTokenFromCookie(req.headers.cookie);
+    console.log('token', token);
+
+    // @todo try catch...401
+    var user;
+    try {
+      user = jwt.verify(token, secret);
+    }
+    catch (err) {
+      return res.status(401).json({
+        message: "Auth Error"
+      })
+    }
+
+    var body;
+    try {
+      body = JSON.parse(req.body);
+    }
+    catch (err) {
+      return res.status(400).json({
+        message: "Problems parsing JSON"
+      })
+    }
+
+    // @TODO 检查 body
+    console.log('### body', body);
+
+    tasksDB.findOne({_id: id}, (err, doc) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Internal Error'
+        });
+      }
+
+      if (!doc) {
+        // doc 不存在
+      }
+
+      // @TODO 检查 doc 的 user
+
+      // 更新其他任务的顺序
+      var order = body.order;
+      tasksDB.update({$and: [
+        {order: {$gte: order}},
+        {order: {$lt: doc.order}},
+      ]}, {
+        $inc: {order:1}
+      }, {
+        multi: true,
+      }, (err, numReplaced) => {
+
+        console.log('update old', numReplaced);
+
+        // 更新移动的任务的顺序
+        tasksDB.update({_id: id}, { $set: {order: order}}, {
+          multi: false,
+          upsert: false,
+          returnUpdatedDocs: true,
+        }, (err, numReplaced, affectedDocuments) => {
+
+          console.log('update cur', numReplaced, affectedDocuments);
+
+          // console.log('update cb', err, numReplaced, affectedDocuments)
+          // return res.json(affectedDocuments);
+
+          tasksDB.find({}).sort({order: 1}).exec((err, docs) => {
+            if (err) {
+              return res.status(500).json({
+                message: 'Internal Error'
+              });
+            }
+
+            console.log('updated docs', docs);
+
+            return res.json(docs);
+          });
+
+
+
+        })
+
+
+      })
+
+
     });
 
   },
@@ -191,7 +300,6 @@ module.exports = {
 
   },
 
-  
   // 后端未实现，dora 直接提供服务
   'POST /api/v1/user/login': (req, res) => {
 

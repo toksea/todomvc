@@ -45,7 +45,6 @@ export const getTodo = () => {
   }
 }
 
-
 export const addTodo = (text) => {
   return (dispatch, getState) => {
 
@@ -56,7 +55,7 @@ export const addTodo = (text) => {
     }).then((task) => {
 
       console.log('task', task);
-      return dispatch({ type: types.ADD_TODO, ...task})
+      return dispatch({ type: types.ADD_TODO, task})
 
     }).catch((error) => {
 
@@ -125,8 +124,58 @@ export const deleteTodo = id => {
   }
 }
 
-export const editTodo = (id, text) => {
+export const moveTodo = (id, to) => {
+  
+  return (dispatch, getState) => {
 
+    console.log('@moveTodo', id, '->', to)
+
+    const data = {
+      order: to
+    }
+    
+    // 这个方法会返回所有数据，而非修改的一条，以便前端重新排序
+    http.patch('/task/' + id + '/order', data).then(res => {
+      return res.data
+    }).then((tasks) => {
+
+      console.log('tasks', tasks);
+
+      // 更新顺序后需要刷新任务列表
+      return dispatch({ type: types.GET_TODO, tasks })
+
+    }).catch((error) => {
+
+      if (error.response) {
+	// The request was made, but the server responded with a status code
+	// that falls out of the range of 2xx
+	console.log(error.response.data);
+	console.log(error.response.status);
+	console.log(error.response.headers);
+
+	let message = ' [' + error.response.status + ']';
+	if (error.response.data && error.response.data.message) {
+          message = error.response.data.message + message;
+	}
+	else {
+          message = '网络错误' + message;
+	}
+	alert(message) // @TODO dispatch
+
+      } else {
+	// Something happened in setting up the request that triggered an Error
+	console.log('Error', error.message);
+	alert(error.message)
+
+      }
+      console.log(error.config);
+    })
+  }
+}
+
+
+
+export const editTodo = (id, text) => {
   return (dispatch, getState) => {
 
     const data = {

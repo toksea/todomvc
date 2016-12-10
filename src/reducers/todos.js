@@ -36,13 +36,14 @@ export default function todos(state = initialState, action) {
 
     case ADD_TODO:
       return [
-        {
-          _id: state.reduce((maxId, todo) => Math.max(todo._id, maxId), -1) + 1,
-          completed: false,
-          text: action.text,
-          username: action.username
-        },
-        ...state
+        ...state,
+	action.task,
+        // {
+        //   _id: state.reduce((maxId, todo) => Math.max(todo._id, maxId), -1) + 1,
+        //   completed: false,
+        //   text: action.text,
+        //   username: action.username
+        // },
       ]
 
     case DELETE_TODO:
