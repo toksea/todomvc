@@ -162,8 +162,8 @@ export const completeTodo = id => {
 
 }
 
-export const completeAll = () => ({ type: types.COMPLETE_ALL })
-export const clearCompleted = () => ({ type: types.CLEAR_COMPLETED })
+// export const completeAll = () => ({ type: types.COMPLETE_ALL })
+// export const clearCompleted = () => ({ type: types.CLEAR_COMPLETED })
 
 export const logIn = pass => {
   return (dispatch, getState) => {

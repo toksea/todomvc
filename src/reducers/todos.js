@@ -47,7 +47,7 @@ export default function todos(state = initialState, action) {
 
     case DELETE_TODO:
       return state.filter(todo =>
-        todo._id !== action._id
+        todo._id !== action.id
       )
 
     case UPDATE_TODO:
