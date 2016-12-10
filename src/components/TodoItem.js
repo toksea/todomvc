@@ -83,17 +83,26 @@ class TodoItem extends Component {
       }
     }
 
-    return connectDragSource(
-      connectDropTarget(
-          <li style={{opacity: isDragging ? 0.5 : 1}} className={classnames({
-            completed: todo.completed,
-            confirmed: todo.confirmed,
-            editing: this.state.editing
-          })}>
-          {element}
-        </li>
+    let ret = (
+        <li style={{opacity: isDragging ? 0.5 : 1}} className={classnames({
+          completed: todo.completed,
+          confirmed: todo.confirmed,
+          editing: this.state.editing
+        })}>
+        {element}
+      </li>
+    );
+
+    if (isEditable) {
+      // 增加 dnd 功能
+      ret = connectDragSource(
+        connectDropTarget(
+          ret
+        )
       )
-    )
+    }
+
+    return ret
   }
 }
 

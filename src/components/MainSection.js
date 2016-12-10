@@ -5,7 +5,8 @@ import { SHOW_ALL, SHOW_COMPLETED, SHOW_CONFIRMED, SHOW_ACTIVE } from '../consta
 import * as perms from '../constants/Perms'
 
 import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+// import HTML5Backend from 'react-dnd-html5-backend';
+import { default as TouchBackend } from 'react-dnd-touch-backend';
 
 
 const TODO_FILTERS = {
@@ -92,4 +93,4 @@ class MainSection extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(MainSection);
+export default DragDropContext(TouchBackend)(MainSection);

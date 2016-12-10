@@ -2932,7 +2932,7 @@ invariant@^2.0.0, invariant@^2.2.0:
   dependencies:
     loose-envify "^1.0.0"
 
-invariant@^2.1.0:
+invariant@^2.1.0, invariant@^2.1.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -4985,7 +4985,7 @@ react-dev-utils@^0.2.1:
     sockjs-client "1.0.3"
     strip-ansi "3.0.1"
 
-react-dnd:
+react-dnd, react-dnd@^2.0.0:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.1.4.tgz#dd2afeddddd5ff4507d795a5bd44361c84374c0f"
   dependencies:
@@ -4999,6 +4999,13 @@ react-dnd-html5-backend:
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.1.2.tgz#bcff5866629c335b310b1062fe6537af35073c66"
   dependencies:
     lodash "^4.2.0"
+
+react-dnd-touch-backend:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.3.tgz#7fd224cc1d0ac6fdbed239270f6ee67183b2f801"
+  dependencies:
+    invariant "^2.1.1"
+    react-dnd "^2.0.0"
 
 react-dock@^0.2.1:
   version "0.2.3"
