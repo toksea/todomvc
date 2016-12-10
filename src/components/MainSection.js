@@ -4,6 +4,10 @@ import Footer from './Footer'
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_CONFIRMED, SHOW_ACTIVE } from '../constants/TodoFilters'
 import * as perms from '../constants/Perms'
 
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+
 const TODO_FILTERS = {
   [SHOW_ALL]: () => true,
   [SHOW_ACTIVE]: todo => !todo.completed,
@@ -11,7 +15,7 @@ const TODO_FILTERS = {
   [SHOW_CONFIRMED]: todo => todo.confirmed
 }
 
-export default class MainSection extends Component {
+class MainSection extends Component {
   static propTypes = {
     todos: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired
@@ -87,3 +91,5 @@ export default class MainSection extends Component {
     )
   }
 }
+
+export default DragDropContext(HTML5Backend)(MainSection);
